@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { getToken } from './constant';
-
+import { getToken } from './Constant';
 
 export { RouteGuard };
 
 function RouteGuard({ children }: any) {
     const router = useRouter();
     const [authorized, setAuthorized] = useState(false);
+    console.log("🚀 ~ file: RouteGauard.ts:10 ~ RouteGuard ~ authorized:", authorized)
 
     useEffect(() => {
         // on initial load - run auth check
@@ -32,8 +32,8 @@ function RouteGuard({ children }: any) {
     function authCheck(url: any) {
         // redirect to login page if accessing a private page and not logged in
         const token = getToken();
-        console.log("🚀 ~ file: RouteGauard.ts:35 ~ authCheck ~ token:", token)
-        const publicPaths = ['/login'];
+        console.log("🚀 ~ file: RouteGauard.ts:34 ~ authCheck ~ token:", token, !token)
+        const publicPaths = ['/login', '/sign-up', '/admin/login', '/forgot-password'];
         const path = url.split('?')[0];
         if (!token && !publicPaths.includes(path)) {
             setAuthorized(false);

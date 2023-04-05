@@ -1,39 +1,9 @@
+import LoginComponent from "@/component/LoginComponent";
 import Head from "next/head";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import Router, { useRouter } from "next/router";
-import Link from "next/link";
-import { login } from "@/pages/api/request";
-import { ToastMessage } from "@/component/ToastMessage";
-import { useEffect } from "react";
-import { getToken, setToken } from "@/component/constant";
+
 
 export default function Login() {
-  const router = useRouter();
 
-  const token = getToken();
-  console.log("🚀 ~ file: login.tsx:13 ~ Login ~ token:", token);
-  const initialValues = {
-    email: "",
-    password: "",
-  };
-
-  const validationSchema = Yup.object({
-    email: Yup.string()
-      .email("Invalid email address")
-      .required("Email is required"),
-    password: Yup.string().required("Password is required"),
-  });
-
-  useEffect(() => {
-    if (token) {
-      router.push("/");
-    }
-  }, []);
-  //   {
-  //     "email": "eve.holt@reqres.in",
-  //     "password": "cityslicka"
-  // }
   return (
     <>
       <Head>
@@ -43,128 +13,7 @@ export default function Login() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
-              <div className="card border-0 shadow rounded-3 my-5">
-                <div className="card-body p-4 p-sm-5">
-                  <h5 className="card-title text-center mb-5 fw-light fs-5">
-                    Sign In
-                  </h5>
-                  <Formik
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={(values, { setSubmitting }) => {
-                      login(values.email, values.password)
-                        .then((resp) => {
-                          console.log(
-                            "🚀 ~ file: login.tsx:44 ~ .then ~ resp:",
-                            resp
-                          );
-                          setToken(resp.data.token);
-                          ToastMessage("Login Successful!", "success");
-                        })
-                        .catch((err) => {
-                          console.log(
-                            "🚀 ~ file: login.tsx:53 ~ Login ~ err:",
-                            err
-                          );
-                          ToastMessage(err.response.data.error, "error");
-                        });
-                      console.log(
-                        "🚀 ~ file: index.tsx:117 ~ Login ~ values:",
-                        values
-                      );
-                      // Router.push("dashboard");
-                    }}
-                  >
-                    {({
-                      values,
-                      errors,
-                      touched,
-                      handleChange,
-                      handleBlur,
-                      handleSubmit,
-                      isSubmitting,
-                      /* and other goodies */
-                    }) => (
-                      <form onSubmit={handleSubmit}>
-                        <div className="mb-3">
-                          <label className="form-label" htmlFor="email">
-                            Email address
-                          </label>
-                          <div className="form-outline">
-                            <input
-                              type="email"
-                              name="email"
-                              className="form-control"
-                              id="floatingInput"
-                              placeholder="name@example.com"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.email}
-                            />
-                            {touched.email && errors.email ? (
-                              <div className="invalid-feedback">
-                                {errors.email}
-                              </div>
-                            ) : null}
-                          </div>
-                        </div>
-                        <div className="mb-3">
-                          <label className="form-label" htmlFor="password">
-                            Password
-                          </label>
-                          <div className="form-outline">
-                            <input
-                              type="password"
-                              className="form-control"
-                              id="floatingPassword"
-                              placeholder="Password"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.password}
-                              name="password"
-                            />
-                            {touched.password && errors.password ? (
-                              <div className="invalid-feedback">
-                                {errors.password}
-                              </div>
-                            ) : null}
-                          </div>
-                        </div>
-
-                        <div className="form-check mb-3">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="rememberPasswordCheck"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="rememberPasswordCheck"
-                          >
-                            Remember password
-                          </label>
-                        </div>
-                        <div className="d-grid">
-                          <button
-                            className="btn btn-primary btn-login text-uppercase fw-bold"
-                            type="submit"
-                          >
-                            Sign in
-                          </button>
-                          <Link href="sign-up">Sign Up</Link>
-                        </div>
-                      </form>
-                    )}
-                  </Formik>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <LoginComponent type="" />
       </main>
     </>
   );
